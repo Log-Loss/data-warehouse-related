@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import random
 
 
 # help functions
@@ -18,14 +19,13 @@ class mongoAtlas(object):
     def __init__(self):
         self.client = MongoClient(
             "[your mongoDB Atlas url]")
-
         self.db = self.client.movie_id
         self.to_go = self.db.to_go
         self.done = self.db.done
 
 # get all the ids to go
     def get_ids(self):
-        return self.to_go.find()
+        return self.to_go.find().limit(100).skip(random.randint(100, 2000))
 
 # once the id is finished, move it to the done collection
     def update_id(self, id_):

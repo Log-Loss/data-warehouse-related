@@ -2,6 +2,7 @@ from Crawler.getWebPage import get_web_content
 import json
 import logging
 import requests
+import os
 
 from DB.atlas import *
 
@@ -22,14 +23,18 @@ if __name__ == '__main__':
     atlas = mongoAtlas()
     movie_ids = atlas.get_ids()
 
-    for movie_id in get_next_id(movie_ids):
-        url = 'https://www.amazon.com/dp/' + movie_id
-        content_dict = get_web_content(url)
-        if content_dict != None:
-            with open('./pagedata/{}.json'.format(movie_id), 'w') as f:
-                content_json = json.dump(content_dict, f)
+    while movie_ids != None:
 
-            logging.info(movie_id + ' finished !')
+        for movie_id in get_next_id(movie_ids):
+            url = 'https://www.amazon.com/dp/' + movie_id
+            content_dict = get_web_content(url)
+            if content_dict != None:
+                with open('./pagedata/{}.json'.format(movie_id), 'w') as f:
+                    content_json = json.dump(content_dict, f)
 
-            atlas.update_id(movie_id)
-            logging.info('update mongo Atlas !')
+                logging.info(movie_id + ' finished ! size:' + str(os.path.getsize('./pagedata/{}.json'.format(movie_id))))
+
+                atlas.update_id(movie_id)
+                logging.info('update mongo Atlas !')
+
+        movie_ids = atlas.get_ids()
