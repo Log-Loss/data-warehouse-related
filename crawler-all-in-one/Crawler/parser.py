@@ -57,6 +57,8 @@ def parser(page_content):
         dict_content = page_with_table(table)
         img_class = content.find(class_='dp-meta-icon-container')
         dict_content['img'] = img_class.img['src']
+        title = content.find(id='aiv-content-title')
+        dict_content['title'] = title.text.strip()
         other_format = content.find(class_='dv-cross-linking-other-formats')
         if other_format != None:
             dict_content['other-format'] = other_format.text
@@ -69,6 +71,8 @@ def parser(page_content):
         dict_content = page_with_li(li_generator)
         img_class = content.find(class_='imgTagWrapper')
         dict_content['img'] = img_class.img['src']
+        title = content.find(id='productTitle')
+        dict_content['title'] = title.text.strip()
         other_format = content.find(id='tmmSwatches')
         if other_format != None:
             dict_content['other-format'] = other_format.text
