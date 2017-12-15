@@ -31,8 +31,7 @@ def parse_star_views(avg_review_list):
 
 def parse_runtime(runtime_list):
     try:
-        runtime = runtime_list[0].replace('minutes', '').replace(' ', '')
-        return runtime
+        return runtime_list[0]
     except:
         pass
 
@@ -59,7 +58,7 @@ def format_json(json_text, key_list, format_list):
         pass
 
     try:
-        if json_text.has_key('DVD Release Date:'):
+        if 'DVD Release Date:' in json_text:
             output['Release Year'], output['Release Month'], output['Release Day'] = parse_Release_Date(
                 json_text['DVD Release Date:'])
         # json_text.pop('DVD Release Date:')
@@ -79,8 +78,8 @@ def format_json(json_text, key_list, format_list):
     if len(key_list) < 1:
         key_list = ['ASIN', 'Actors', 'Director', 'Format',
                     'Genres', 'Language', 'MPAA rating', 'Rated',
-                    'Region', 'Run Time', 'Studio', 'Supporting actors',
-                    'Writers', 'imdb', 'img', 'star', 'title', 'views']
+                    'Region', 'Studio', 'Supporting actors',
+                    'Writers', 'imdb', 'img', 'title']
 
     for key in json_text.keys():
         if key.strip(':') not in key_list:
