@@ -24,21 +24,35 @@ def search_format(format_text, format_lists):
 def parse_star_views(avg_review_list):
     try:
         star, views = avg_review_list[0].split()[0], avg_review_list[1].split()[0]
-        return star, views
+        return star, views.replace(',', '')
     except:
         return None, None
+
+def parse_title(title):
+    try:
+        title = title.split('\n')
+
+        return title[0]
+    except:
+        return None
 
 
 def parse_runtime(runtime_list):
     try:
+        if 'minutes' in runtime_list[0]:
+            runtime = runtime_list[0].replace('minutes', '').replace(' ', '')
+            return runtime
+        if 'seconds' in runtime_list[0]:
+            runtime = int( runtime_list[0].replace('seconds', '').replace(' ', '') ) / 60
+            return runtime
         return runtime_list[0]
     except:
-        pass
+        return runtime_list[0]
 
 def parse_Release_Date(Release_Date_list):
     try:
-        Release_Day,Release_Month,Release_Year=Release_Date_list[0].replace(',','').split()[1],Release_Date_list[0].split()[0],Release_Date_list[0].replace(',','').split()[2]
-        return Release_Day,Release_Month,Release_Year
+        release_day,release_month,release_year=Release_Date_list[0].replace(',','').split()[1],Release_Date_list[0].split()[0],Release_Date_list[0].replace(',','').split()[2]
+        return release_year,release_month,release_day
     except:
         return None, None, None
 
@@ -69,17 +83,24 @@ def format_json(json_text, key_list, format_list):
     except:
         pass
 
+    if 'MPAA rating:' in json_text:
+        json_text['Rated'] = json_text['MPAA rating:']
+
+
     if 'Directors:' in json_text:
         json_text['Director'] = json_text['Directors:']
 
     if 'Starring' in json_text:
         json_text['Actors'] = json_text['Starring']
 
+    if 'title' in json_text:
+        output['title'] = parse_title(json_text['title'])
+
     if len(key_list) < 1:
         key_list = ['ASIN', 'Actors', 'Director', 'Format',
-                    'Genres', 'Language', 'MPAA rating', 'Rated',
+                    'Genres', 'Language', 'Rated',
                     'Region', 'Studio', 'Supporting actors',
-                    'Writers', 'imdb', 'img', 'title']
+                    'Writers', 'imdb', 'img']
 
     for key in json_text.keys():
         if key.strip(':') not in key_list:

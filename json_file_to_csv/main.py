@@ -3,12 +3,12 @@ from utils import *
 format_list = ['Audio CD', 'VHS Tape', 'Amazon Video', 'Blu-ray', 'DVD', '3D', '4K', 'Multi-Format', 'Prime Video']
 
 key_list = ['ASIN', 'Actors', 'Director', 'Format',
-                    'Genres', 'Language', 'MPAA rating', 'Rated',
+                    'Genres', 'Language', 'Rated',
                     'Region', 'Studio', 'Supporting actors',
-                    'Writers', 'imdb', 'img', 'title']
+                    'Writers', 'imdb', 'img']
 
 # IMPORTANT change this directly to your json data file
-path_dir = '/Users/Licor/Desktop/test_data/'
+path_dir = '/Users/Licor/Desktop/JsonMoredone'
 
 
 files = glob.iglob(r'{}/*.[Jj]son'.format(path_dir))
