@@ -32,7 +32,7 @@ def parse_title(title):
     try:
         title = title.split('\n')
 
-        return title[0]
+        return title[0].replace(',', '_COMMA_')
     except:
         return None
 
